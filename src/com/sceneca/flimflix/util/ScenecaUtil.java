@@ -13,7 +13,7 @@ import com.sceneca.flimflix.model.UserPersonalizationhistory;
 @Component
 public class ScenecaUtil {
 
-	private static final long LIMIT = 5;
+	
 
 	public Comparator<MovieInfo> getComparatorByCount() {
 		return Comparator.comparingInt(MovieInfo::getLikeCount);
@@ -89,13 +89,13 @@ public class ScenecaUtil {
 		return moviesBasedOnCountryNonWatched;
 	}
 
-	// Top LIMIT watched movies with preference
+	// Top  watched movies with preference
 	public List<MovieInfo> getTopWatchedMoviesWithPreference(List<MovieInfo> listMovieInfo,
 			UserPersonalizationhistory userPersonalizationHistory) {
 		System.out.println("Entering getTopWatchedMoviesWithPreference:::");
 		List<MovieInfo> watchedMovies = new ArrayList<>();
 		listMovieInfo.stream().filter(x -> userPersonalizationHistory.getHistoryOfMovieswatched().contains(x.getName()))
-				.limit(LIMIT).forEach(x -> {
+				.forEach(x -> {
 					System.out.println(x.getGenre() + "-" + x.getName());
 					watchedMovies.add(x);
 				});
@@ -104,16 +104,26 @@ public class ScenecaUtil {
 
 	}
 
-	// Top LIMIT watched movies without preference
-	public List<MovieInfo> getTopWatchedMoviesWithOutPreference(List<MovieInfo> listMovieInfo) {
-		System.out.println("Entering getTopWatchedMoviesWithOutPreference:::");
-		List<MovieInfo> watchedMovies = new ArrayList<>();
-		listMovieInfo.stream().limit(LIMIT).forEach(x -> {
+	
+
+	/**
+	 * Top rated movies based on Limit
+	 * 
+	 * @param listMovieInfo
+	 *            List
+	 * @param limit
+	 *            int
+	 * @return List
+	 */
+	public List<MovieInfo> getTopRatedMovies(List<MovieInfo> listMovieInfo, int limit) {
+		System.out.println("Entering getTopRatedMovies:::");
+		List<MovieInfo> topRatedMovies = new ArrayList<>();
+		listMovieInfo.stream().sorted(getComparatorByCount()).limit(limit).forEach(x -> {
 			System.out.println(x.getGenre() + "-" + x.getName());
-			watchedMovies.add(x);
+			topRatedMovies.add(x);
 		});
 		System.out.println("Exiting getTopWatchedMoviesWithOutPreference:::");
-		return watchedMovies;
+		return topRatedMovies;
 
 	}
 }
