@@ -10,16 +10,33 @@ import org.springframework.stereotype.Component;
 import com.sceneca.flimflix.model.MovieInfo;
 import com.sceneca.flimflix.model.UserPersonalizationhistory;
 
+/**
+ * Utility component
+ * @author Mahesh Rachuri
+ *
+ */
 @Component
 public class ScenecaUtil {
 
-	
-
+	/**
+	 * Comparator based on like count
+	 * 
+	 * @return
+	 */
 	public Comparator<MovieInfo> getComparatorByCount() {
 		return Comparator.comparingInt(MovieInfo::getLikeCount);
 	}
 
-	// Removing duplicates consider Genre first then country
+	/**
+	 * Retrieve based on Genre and country excluding overlapped movie taking
+	 * genre as preference
+	 * 
+	 * @param listMovieInfo
+	 *            List
+	 * @param userPersonalizationHistory
+	 *            UserPersonalizationhistory
+	 * @return List
+	 */
 	public List<MovieInfo> getMoviesBasedOnGenreOverCountry(List<MovieInfo> listMovieInfo,
 			UserPersonalizationhistory userPersonalizationHistory) {
 		System.out.println("Entering getMoviesBasedOnGenreOverCountry:::");
@@ -46,7 +63,15 @@ public class ScenecaUtil {
 
 	}
 
-	// non - watched movies with preferred Genres
+	/**
+	 * Retrieve movies based on Genre excluding watched ones
+	 * 
+	 * @param listMovieInfo
+	 *            List
+	 * @param userPersonalizationHistory
+	 *            UserPersonalizationhistory
+	 * @return List
+	 */
 	public List<MovieInfo> getMoviesBasedOnGenreNonWatched(List<MovieInfo> listMovieInfo,
 			UserPersonalizationhistory userPersonalizationHistory) {
 
@@ -72,7 +97,15 @@ public class ScenecaUtil {
 
 	}
 
-	// non - watched movies with preferred Countries
+	/**
+	 * Retrieve movies based on country excluding watched ones
+	 * 
+	 * @param list
+	 *            listMovieInfo
+	 * @param userPersonalizationHistory
+	 *            UserPersonalizationhistory
+	 * @return List
+	 */
 	public List<MovieInfo> getMoviesBasedOnCountryNonWatched(List<MovieInfo> listMovieInfo,
 			UserPersonalizationhistory userPersonalizationHistory) {
 
@@ -89,7 +122,15 @@ public class ScenecaUtil {
 		return moviesBasedOnCountryNonWatched;
 	}
 
-	// Top  watched movies with preference
+	/**
+	 * Retrieve watched all watched movies
+	 * 
+	 * @param listMovieInfo
+	 *            List
+	 * @param userPersonalizationHistory
+	 *            UserPersonalizationhistory
+	 * @return List
+	 */
 	public List<MovieInfo> getTopWatchedMoviesWithPreference(List<MovieInfo> listMovieInfo,
 			UserPersonalizationhistory userPersonalizationHistory) {
 		System.out.println("Entering getTopWatchedMoviesWithPreference:::");
@@ -103,8 +144,6 @@ public class ScenecaUtil {
 		return watchedMovies;
 
 	}
-
-	
 
 	/**
 	 * Top rated movies based on Limit
