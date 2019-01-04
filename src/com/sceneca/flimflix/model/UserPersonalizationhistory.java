@@ -2,14 +2,18 @@ package com.sceneca.flimflix.model;
 
 import java.util.List;
 
+/**
+ * Model class to store user personalization details
+ * 
+ * @author Mahesh Rachuri
+ *
+ */
 public class UserPersonalizationhistory {
 
 	private String userName;
 	private List<String> countries;
 	private List<String> genres;
 	private List<String> HistoryOfMovieswatched;
-
-	
 
 	public String getUserName() {
 		return userName;
