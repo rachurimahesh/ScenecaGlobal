@@ -1,0 +1,8 @@
+com\sceneca\flimflix\model\UserPersonalizationhistory.class
+com\sceneca\flimflix\model\MovieInfo.class
+com\sceneca\flimflix\repo\UserPersonalizationDetailsRepo.class
+com\sceneca\flimflix\service\RecommandationService.class
+com\sceneca\flimflix\repo\MovieRepo.class
+com\sceneca\flimflix\controller\MoviesPreferenceController.class
+com\sceneca\flimflix\FilmFlixApplication.class
+com\sceneca\flimflix\util\ScenecaUtil.class
