@@ -1,5 +1,11 @@
 package com.sceneca.flimflix.model;
 
+/**
+ * Model class to store movie information
+ * 
+ * @author Mahesh Rachuri
+ *
+ */
 public class MovieInfo {
 
 	private String name;
