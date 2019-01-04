@@ -14,9 +14,8 @@ import com.sceneca.flimflix.repo.UserPersonalizationDetailsRepo;
 import com.sceneca.flimflix.service.RecommandationService;
 import com.sceneca.flimflix.util.ScenecaUtil;
 
-
 @Service
-public class RecommandationServiceImpl implements RecommandationService{
+public class RecommandationServiceImpl implements RecommandationService {
 
 	@Autowired
 	UserPersonalizationDetailsRepo userRepo;
@@ -26,12 +25,15 @@ public class RecommandationServiceImpl implements RecommandationService{
 
 	@Autowired
 	ScenecaUtil util;
-	
+
 	private static final int LIMIT = 20;
 
-	public List<MovieInfo> getTop20MoviesForRegisteredUser(String userName) {
-		List<MovieInfo> top20Movies = null;
+	public List<MovieInfo> getMoviesForRegisteredUser(String userName) {
+
+		List<MovieInfo> topMovies = null;
+
 		UserPersonalizationhistory userPersonalizationHistory = userRepo.getUserPeronalizationDetails(userName);
+
 		List<MovieInfo> listMovieInfo = movieRepo.getListOfMovies();
 
 		// * Making the Genres LIFO
@@ -44,39 +46,44 @@ public class RecommandationServiceImpl implements RecommandationService{
 		List<MovieInfo> moviesBasedOnGenreNonWatched = util.getMoviesBasedOnGenreNonWatched(listMovieInfo,
 				userPersonalizationHistory);
 
-		// watched movies
-		List<MovieInfo> watchedMovies = util.getTopWatchedMoviesWithPreference(listMovieInfo,
-				userPersonalizationHistory);
-		top20Movies = moviesBasedOnGenreNonWatched.stream().limit(20).collect(Collectors.toList());
-		if (top20Movies.size() == 20) {
-			return top20Movies;
+		topMovies = moviesBasedOnGenreNonWatched.stream().limit(LIMIT).collect(Collectors.toList());
+		if (topMovies.size() == LIMIT) {
+			return topMovies;
 		} else {
 			List<MovieInfo> moviesBasedOnGenreOverCountry = util.getMoviesBasedOnGenreOverCountry(listMovieInfo,
 					userPersonalizationHistory);
-			top20Movies = moviesBasedOnGenreOverCountry.stream().limit(LIMIT).collect(Collectors.toList());
-			if (top20Movies.size() == LIMIT) {
-				return top20Movies;
-			} else {// After adding preference movies if the list is less than
-					// 20
-					// add user watched movies at the end.
-				top20Movies.addAll(watchedMovies);
-				top20Movies = top20Movies.stream().limit(LIMIT).collect(Collectors.toList());
-				if (top20Movies.size() == LIMIT) {
-					return top20Movies;
+			topMovies = moviesBasedOnGenreOverCountry.stream().limit(LIMIT).collect(Collectors.toList());
+			if (topMovies.size() == LIMIT) {
+				return topMovies;
+			} else {// if the list is less than add watched movies at the end.
+				// watched movies
+				List<MovieInfo> watchedMovies = util.getTopWatchedMoviesWithPreference(listMovieInfo,
+						userPersonalizationHistory);
+
+				topMovies.addAll(watchedMovies);
+				
+				topMovies = topMovies.stream().limit(LIMIT).collect(Collectors.toList());
+				if (topMovies.size() == LIMIT) {
+					return topMovies;
 				} else {// After adding preference & watched list if the list is
 						// less than 20 then get top 20 movies based on
 						// Mostly liked Count
-					top20Movies = util.getTopRatedMovies(listMovieInfo, LIMIT);
-					Collections.reverse(top20Movies); // Most liked movies first
+					topMovies = util.getTopRatedMovies(listMovieInfo, LIMIT);
+					Collections.reverse(topMovies); // Most liked movies first
 				}
 			}
 
 		}
-		return top20Movies;
+		return topMovies;
 
 	}
 
-	public List<MovieInfo> getTop20MoviesForUnregistered() {
+	/**
+	 * Retrieved top rated movie for unregistered users
+	 * 
+	 * @return List
+	 */
+	public List<MovieInfo> getMoviesForUnregistered() {
 		List<MovieInfo> listMovieInfo = movieRepo.getListOfMovies();
 		return util.getTopRatedMovies(listMovieInfo, LIMIT);
 
